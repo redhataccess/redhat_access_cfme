@@ -1,0 +1,13 @@
+type: item
+name: Rules
+id: accessInsightsRules
+
+feature: redhat_access_insights_admin
+rbac:
+  feature: redhat_access_insights_admin
+
+parent: accessInsights
+href: /redhat_access/insights/rules
+item_type: big_iframe
+
+

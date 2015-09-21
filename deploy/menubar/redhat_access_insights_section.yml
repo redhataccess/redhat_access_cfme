@@ -1,0 +1,6 @@
+type: section
+name: Access Insights
+id: accessInsights
+before: svc
+section_type: big_iframe
+href: /redhat_access/insights/

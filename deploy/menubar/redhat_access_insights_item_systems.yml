@@ -1,0 +1,13 @@
+type: item
+name: Systems
+id: accessInsightsSystems
+
+feature: redhat_access_insights_reports
+rbac:
+  feature: redhat_access_insights_reports
+
+parent: accessInsights
+href: /redhat_access/insights/systems
+item_type: big_iframe
+
+
