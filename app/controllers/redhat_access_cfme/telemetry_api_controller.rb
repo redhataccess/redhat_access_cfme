@@ -1,6 +1,5 @@
 #require 'redhat_access_lib'
 #require_relative  '../../../services/telemetry_api'
-
 module RedhatAccessCfme
 
   class PortalClient < RedhatAccessCfme::Telemetry::Client
@@ -37,12 +36,30 @@ module RedhatAccessCfme
 
   class TelemetryApiController < RedhatAccessCfme::ApplicationController
 
+    include RedhatAccessCfme::Telemetry::SmartState
+
     STRATA_URL = "https://cert-api.access.redhat.com/r/insights"
 
     def get_branch_info
-      user, pass = ActionController::HttpAuthentication::Basic::user_name_and_password(request)
-      Rails.logger.error "TEST #{user}"
-      render status: 200, json: { "remote_branch" => "ZOMGTESTFROMCFME", "remote_leaf" => user }
+      #user, pass = ActionController::HttpAuthentication::Basic::user_name_and_password(request)
+      #Rails.logger.error "TEST #{user}"
+      render status: 200, json: {"branch_id": "ZOMGTESTFROMCFME"}
+    end
+
+    def get_machine_id
+      #0d64ee48-61eb-11e5-a3fa-001a4ad54000
+      guid = params[:guid]
+      machine_id = get_vm_machine_id(guid)
+      if machine_id
+        render status: 200, json: {"machine_id": machine_id}
+      else 
+        render status: 404, json: {"error": "machine_id not found for requested system"}
+      end
+    end
+
+    def get_machine_ids
+      users_machine_ids = get_users_machine_ids @auth_user
+      render status: 200, json: users_machine_ids
     end
 
     def get_file_data params
@@ -93,40 +110,6 @@ module RedhatAccessCfme
       Rails.logger.error res
       print_vms
       render status: res[:code] , json: res[:data]
-    end
-
-
-    def print_vms
-      #vms = Vm.all
-      rhai_files = ['/etc/redhat-access-insights/machine-id']
-      vms = Vm.joins(:filesystems).where(:filesystems => {:name => rhai_files})
-      options = {
-        :userid         => @auth_user,
-      }
-      myVms = Rbac.filtered(vms, options)
-
-      myVms.each do |a|
-        a.filesystems.each do |fs|
-          if (fs.name .eql? "/etc/redhat-access-insights/machine-id")
-            Rails.logger.info(fs.contents)
-          end
-        end
-      end
-      myVms.each { |a| Rails.logger.info(a.name) }
-    end
-
-
-    def print_hosts
-      #rhai_files = ['/etc/redhat-access-insights/machine-id']
-      #hosts = Host.joins(:filesystems).where(:filesystems => {:name => rhai_files})
-      hosts = Host.all
-      hosts = Rbac.filtered(hosts, :class => Host, :userid => @auth_user)
-      Rails.logger.error(hosts);
-      hosts.each do |host|
-        host.filesystems.each do |fs|
-          Rails.logger.error(fs.name)
-        end
-      end
     end
 
   end

@@ -13,6 +13,11 @@ RedhatAccessCfme::Engine.routes.draw do
     match '/:path',          to: 'telemetry_api#proxy', :constraints => {:path => /.*/}, via: [:all]
   end
 
+  scope '/r/cfme' do
+    get   '/system',    to: 'telemetry_api#get_machine_ids'
+    get   '/system/:guid',    to: 'telemetry_api#get_machine_id'
+  end
+
   get '/insights(/*path)', to: 'insights#index'
   
 end
