@@ -3,3 +3,6 @@
 Session.vim
 .agignore
 tags
+
+#folder for user files
+.local
