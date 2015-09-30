@@ -5,12 +5,20 @@
 :identifier: redhat_access_insights
 :children:
 
-- :name: Red Hat Access Insights Reports
-  :description: Access to Red Hat Access Insights Reports
+- :name: Red Hat Access Insights Overview
+  :description: Access to Red Hat Access Insights Overview
   :feature_type: node
-  :identifier: redhat_access_insights_reports
+  :identifier: redhat_access_insights_overview
 - :name: Red Hat Access Insights Admin
   :description: Access to Red Hat Access Admin Pages
   :feature_type: node
   :identifier: redhat_access_insights_admin
+- :name: Red Hat Access Insights Rules
+  :description: Access to Red Hat Access Rules Page
+  :feature_type: node
+  :identifier: redhat_access_insights_rules
+- :name: Red Hat Access Insights Systems
+  :description: Access to Red Hat Access Systems Page
+  :feature_type: node
+  :identifier: redhat_access_insights_systems
 

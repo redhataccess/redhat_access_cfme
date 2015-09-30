@@ -13,7 +13,7 @@
 
 Name: %{?scl_prefix}rubygem-%{gem_name}
 Version: 0.0.1
-Release: 2%{?dist}
+Release: 3%{?dist}
 Summary: Summary of RedhatAccess
 Group: Development/Languages
 License: MIT

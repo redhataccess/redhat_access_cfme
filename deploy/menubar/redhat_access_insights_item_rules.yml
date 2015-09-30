@@ -2,9 +2,9 @@ type: item
 name: Rules
 id: accessInsightsRules
 
-feature: redhat_access_insights_admin
+feature: redhat_access_insights_rules
 rbac:
-  feature: redhat_access_insights_admin
+  feature: redhat_access_insights_rules
 
 parent: accessInsights
 href: /redhat_access/insights/rules
