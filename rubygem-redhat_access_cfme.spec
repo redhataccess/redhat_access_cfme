@@ -12,8 +12,8 @@
 %global rubygem_redhat_access_cfme_dir %{gem_dir}/gems/%{gem_name}-%{version}
 
 Name: %{?scl_prefix}rubygem-%{gem_name}
-Version: 0.0.1
-Release: 3%{?dist}
+Version: 0.0.2
+Release: 1%{?dist}
 Summary: Summary of RedhatAccess
 Group: Development/Languages
 License: MIT
@@ -23,6 +23,7 @@ Source0: %{gem_name}-%{version}.gem
 Requires: %{?scl_prefix}ruby(release)
 Requires: %{?scl_prefix}ruby(rubygems) 
 Requires: %{?scl_prefix}ruby 
+Requires: %{?scl_prefix}rubygem-redhat_access_lib >= 0.0.5
 BuildRequires: %{?scl_prefix}rubygems-devel 
 BuildRequires: %{?scl_prefix}ruby-devel 
 
@@ -123,6 +124,9 @@ popd
 %{gem_instdir}/test
 
 %changelog
+
+* Fri Oct 2 2015 Lindani Phiri <lindani@redhat.com> - 0.0.2-1
+- Switch to use of common redhataccess support lib
 
 * Fri Sep 18 2015 Lindani Phiri - 0.0.1-2
 - Fix miq application appliance location
