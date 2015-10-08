@@ -10,7 +10,7 @@ module RedhatAccessCfme
     end
 
     def get_machines
-      #return ['9186bf73-93c1-4855-9e04-2ce3c9f13125','286ef64a-5d9f-49cb-a321-a0b88307d87d'].sort
+      #return ['9186bf73-93c1-4855-9e04-2ce3c9f13125','286ef64a-5d9f-49cb-a321-a0b88307d87d','e388e982-d4ee-43d3-9670-56051b23155b'].sort
       list = @context.get_machine_ids.values.sort
       if list.empty?
          list = ['NULL_SET']
@@ -20,7 +20,7 @@ module RedhatAccessCfme
 
     # Returns the branch id of the current org/account
     def get_branch_id
-      return "ZOMGTESTFROMCFME"
+      return MiqServer.my_server.guid
     end
 
     def get_auth_opts creds
@@ -45,11 +45,11 @@ module RedhatAccessCfme
     include RedhatAccessCfme::Telemetry::SmartState
 
     STRATA_URL = "https://cert-api.access.redhat.com/r/insights"
-
+   
     def get_branch_info
       #user, pass = ActionController::HttpAuthentication::Basic::user_name_and_password(request)
       #Rails.logger.error "TEST #{user}"
-      render status: 200, json: {branch_id: "ZOMGTESTFROMCFME"}
+      render status: 200, json: {branch_id: MiqServer.my_server.guid}
     end
 
     def get_machine_id
@@ -76,7 +76,7 @@ module RedhatAccessCfme
     end
 
     def proxy_upload
-      request.query_parameters[:branch_id] = "ZOMGTESTFROMCFME"
+      request.query_parameters[:branch_id] = MiqServer.my_server.guid
       original_method  = request.method
       original_params  = request.query_parameters
       original_payload = request.request_parameters[controller_name]
@@ -106,7 +106,12 @@ module RedhatAccessCfme
       if params[:filedata]
         original_payload = get_file_data(params)
       end
-      client = PortalClient.new("#{STRATA_URL}/r/insights", "#{STRATA_URL}", {}, self, { logger: TestLogger.new(Rails.logger) })
+      client = PortalClient.new("#{STRATA_URL}/r/insights",
+                                "#{STRATA_URL}",
+                                {},
+                                self,
+                                { logger: TestLogger.new(Rails.logger),
+                                RedHatSupportLib::TelemetryApi::SUBSET_LIST_TYPE_KEY => RedHatSupportLib::TelemetryApi::SUBSET_LIST_TYPE_MACHINE_ID })
       res = client.call_tapi(original_method,  URI.escape(resource), original_params, original_payload, nil)
       Rails.logger.error(res)
       render status: res[:code] , json: res[:data]
@@ -115,8 +120,8 @@ module RedhatAccessCfme
 
     def get_auth_opts
       return {
-        user: "XXXXXXXX",
-        password: "XXXXXXX",
+        user: "XXXXXXX",
+        password: "XXXXXXXXXX",
         verify_ssl: OpenSSL::SSL::VERIFY_NONE
       }
     end
