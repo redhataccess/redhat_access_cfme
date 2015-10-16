@@ -111,6 +111,7 @@ popd
 %{gem_instdir}/app
 %{gem_instdir}/config
 %{gem_instdir}/deploy
+%{gem_instdir}/public
 
 %{gem_libdir}
 %license %{gem_instdir}/MIT-LICENSE

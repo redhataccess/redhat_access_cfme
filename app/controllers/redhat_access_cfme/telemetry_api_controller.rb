@@ -1,8 +1,8 @@
 require 'redhat_access_lib'
-#require_relative  '../../../services/telemetry_api'
 module RedhatAccessCfme
 
   class PortalClient < RedHatSupportLib::TelemetryApi::Client
+    include RedhatAccessCfme::Telemetry::MiqApi
 
     def initialize(upload_url,api_url, creds, context, optional)
       super(upload_url,api_url, creds, optional)
@@ -13,14 +13,14 @@ module RedhatAccessCfme
       #return ['9186bf73-93c1-4855-9e04-2ce3c9f13125','286ef64a-5d9f-49cb-a321-a0b88307d87d','e388e982-d4ee-43d3-9670-56051b23155b'].sort
       list = @context.get_machine_ids.values.sort
       if list.empty?
-         list = ['NULL_SET']
-       end
+        list = ['NULL_SET']
+      end
       list
     end
 
-    # Returns the branch id of the current org/account
+    # Returns the branch id of the current appliance
     def get_branch_id
-      return MiqServer.my_server.guid
+      return current_server_guid
     end
 
     def get_auth_opts creds
@@ -42,14 +42,12 @@ module RedhatAccessCfme
 
   class TelemetryApiController < RedhatAccessCfme::ApplicationController
 
-    include RedhatAccessCfme::Telemetry::SmartState
+    include RedhatAccessCfme::Telemetry::MiqApi
 
     STRATA_URL = "https://cert-api.access.redhat.com/r/insights"
-   
+
     def get_branch_info
-      #user, pass = ActionController::HttpAuthentication::Basic::user_name_and_password(request)
-      #Rails.logger.error "TEST #{user}"
-      render status: 200, json: {branch_id: MiqServer.my_server.guid}
+      render status: 200, json: {branch_id: current_server_guid}
     end
 
     def get_machine_id
@@ -76,7 +74,7 @@ module RedhatAccessCfme
     end
 
     def proxy_upload
-      request.query_parameters[:branch_id] = MiqServer.my_server.guid
+      request.query_parameters[:branch_id] = current_server_guid
       original_method  = request.method
       original_params  = request.query_parameters
       original_payload = request.request_parameters[controller_name]
@@ -91,6 +89,7 @@ module RedhatAccessCfme
                                 {},
                                 self,
                                 { :logger =>TestLogger.new(Rails.logger),
+                                  :user_agent => http_user_agent,
                                   RedHatSupportLib::TelemetryApi::SUBSET_LIST_TYPE_KEY => RedHatSupportLib::TelemetryApi::SUBSET_LIST_TYPE_MACHINE_ID })
 
       res = client.call_tapi(original_method,  URI.escape(resource), original_params, original_payload, nil)
@@ -101,6 +100,7 @@ module RedhatAccessCfme
     def proxy
       original_method  = request.method
       original_params  = request.query_parameters
+      original_params  = add_branch_to_params(original_params)
       original_payload = request.request_parameters[:telemetry_api]
       resource         = params[:path] == nil ?  "/" : params[:path]
       if params[:filedata]
@@ -110,21 +110,49 @@ module RedhatAccessCfme
                                 "#{STRATA_URL}",
                                 {},
                                 self,
-                                { logger: TestLogger.new(Rails.logger),
-                                RedHatSupportLib::TelemetryApi::SUBSET_LIST_TYPE_KEY => RedHatSupportLib::TelemetryApi::SUBSET_LIST_TYPE_MACHINE_ID })
+                                { :logger => TestLogger.new(Rails.logger),
+                                  :user_agent => http_user_agent,
+                                  RedHatSupportLib::TelemetryApi::SUBSET_LIST_TYPE_KEY => RedHatSupportLib::TelemetryApi::SUBSET_LIST_TYPE_MACHINE_ID })
       res = client.call_tapi(original_method,  URI.escape(resource), original_params, original_payload, nil)
-      Rails.logger.error(res)
       render status: res[:code] , json: res[:data]
     end
 
 
+    def add_branch_to_params(params)
+      if params.nil?
+        params = {}
+      end
+      params[:branch_id] = current_server_guid
+      params
+    end
+
+
+
     def get_auth_opts
+
+      # return {
+      #   user: rh_config.userid,
+      #   password: rh_config.password,
+      #   verify_ssl: OpenSSL::SSL::VERIFY_NONE
+      # }
+
       return {
-        user: "XXXXXXX",
-        password: "XXXXXXXXXX",
-        verify_ssl: OpenSSL::SSL::VERIFY_NONE
+        :ssl_client_cert => OpenSSL::X509::Certificate.new(File.read("#{Dir.home}/cert.pem")),
+        :ssl_client_key => OpenSSL::PKey::RSA.new(File.read("#{Dir.home}/key.pem")),
+        :verify_ssl => OpenSSL::SSL::VERIFY_NONE
+      } if Rails.env.development?
+
+      return {
+        :ssl_client_cert => OpenSSL::X509::Certificate.new(File.read("/etc/pki/consumer/cert.pem")),
+        :ssl_client_key => OpenSSL::PKey::RSA.new(File.read("/etc/pki/consumer/key.pem")),
+        :verify_ssl => OpenSSL::SSL::VERIFY_NONE
       }
     end
+
+    def http_user_agent
+        "redhat_access_cfme/#{RedhatAccessCfme::VERSION}"
+    end
+
 
   end
 end
