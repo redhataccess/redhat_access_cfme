@@ -29,7 +29,7 @@ module RedhatAccessCfme
         begin
           machine_id = Vm.find_by_guid(guid).filesystems.find_by_name(MACHINE_ID_FILE_NAME).contents
         rescue Exception => e
-          Rails.logger.error("No machine_id found for GUID #{guid}")
+          #Rails.logger.error("No machine_id found for GUID #{guid}")
         end
         machine_id
       end
