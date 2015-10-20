@@ -9,12 +9,12 @@ module RedhatAccessCfme
     end
 
     def get_machines
-      ['9186bf73-93c1-4855-9e04-2ce3c9f13125', '286ef64a-5d9f-49cb-a321-a0b88307d87d', 'e388e982-d4ee-43d3-9670-56051b23155b'].sort
-      # list = @context.get_machine_ids.values.sort
-      # if list.empty?
-      #   list = ['NULL_SET']
-      # end
-      # list
+      # ['9186bf73-93c1-4855-9e04-2ce3c9f13125', '286ef64a-5d9f-49cb-a321-a0b88307d87d', 'e388e982-d4ee-43d3-9670-56051b23155b'].sort
+      list = @context.get_machine_ids.values.sort
+      if list.empty?
+        list = ['NULL_SET']
+      end
+      list
     end
 
     # Returns the branch id of the current appliance
@@ -43,8 +43,10 @@ module RedhatAccessCfme
 
   class TelemetryApiController < RedhatAccessCfme::ApplicationController
     include RedhatAccessCfme::Telemetry::MiqApi
+
     SUBSET_LIST_TYPE_KEY =   RedHatSupportLib::TelemetryApi::SUBSET_LIST_TYPE_KEY
     SUBSET_LIST_TYPE = RedHatSupportLib::TelemetryApi::SUBSET_LIST_TYPE_MACHINE_ID
+
 
     def get_branch_info
       render :status => 200, :json => {:branch_id => current_server_guid}
@@ -93,6 +95,7 @@ module RedhatAccessCfme
                                 :http_proxy          => rhai_service_proxy,
                                 SUBSET_LIST_TYPE_KEY => SUBSET_LIST_TYPE)
 
+
       res = client.call_tapi(original_method,  URI.escape(resource), original_params, original_payload, nil)
       render :status => res[:code], :json => res[:data]
     end
@@ -104,6 +107,7 @@ module RedhatAccessCfme
       original_params  = add_branch_to_params(original_params)
       original_payload = request.request_parameters[controller_name]
       resource         = params[:path].nil? ? "/" : params[:path]
+
       if params[:filedata]
         original_payload = get_file_data(params)
       end
@@ -116,6 +120,7 @@ module RedhatAccessCfme
                                 :user_headers        => {'content-type' => 'application/json', 'accept' => 'application/json'},
                                 :http_proxy          => rhai_service_proxy,
                                 SUBSET_LIST_TYPE_KEY => SUBSET_LIST_TYPE)
+
       res = client.call_tapi(original_method,  URI.escape(resource), original_params, original_payload, nil)
       render :status => res[:code], :json => res[:data]
     end
@@ -126,6 +131,7 @@ module RedhatAccessCfme
       end
       # Rails.logger.error("Proxy debug is #{rhai_service_auth_opts}")
       # params[:branch_id] = current_server_guid
+
       params
     end
 
@@ -139,6 +145,7 @@ module RedhatAccessCfme
         :ssl_client_cert => OpenSSL::X509::Certificate.new(File.read("#{Dir.home}/consumer/cert.pem.sat6")),
         :ssl_client_key  => OpenSSL::PKey::RSA.new(File.read("#{Dir.home}/consumer/key.pem.sat6")),
         :verify_ssl      => OpenSSL::SSL::VERIFY_NONE
+
       } if Rails.env.development?
 
       rhai_service_auth_opts
