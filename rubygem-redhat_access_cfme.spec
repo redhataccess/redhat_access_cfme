@@ -21,11 +21,11 @@ URL: http://labs-git.usersys.redhat.com/labs/redhat-access-proactive-cfme
 Source0: %{gem_name}-%{version}.gem
 
 Requires: %{?scl_prefix}ruby(release)
-Requires: %{?scl_prefix}ruby(rubygems) 
-Requires: %{?scl_prefix}ruby 
+Requires: %{?scl_prefix}ruby(rubygems)
+Requires: %{?scl_prefix}ruby
 Requires: %{?scl_prefix}rubygem-redhat_access_lib >= 0.0.5
-BuildRequires: %{?scl_prefix}rubygems-devel 
-BuildRequires: %{?scl_prefix}ruby-devel 
+BuildRequires: %{?scl_prefix}rubygems-devel
+BuildRequires: %{?scl_prefix}ruby-devel
 
 Provides: %{?scl_prefix}rubygem(%{gem_name}) = %{version}
 # BuildRequires: rubygem(sqlite3)
@@ -112,6 +112,7 @@ popd
 %{gem_instdir}/config
 %{gem_instdir}/deploy
 %{gem_instdir}/public
+%{gem_instdir}/ca
 
 %{gem_libdir}
 %license %{gem_instdir}/MIT-LICENSE
@@ -128,6 +129,7 @@ popd
 
 * Fri Oct 2 2015 Lindani Phiri <lindani@redhat.com> - 0.0.2-1
 - Switch to use of common redhataccess support lib
+- First release with usable code
 
 * Fri Sep 18 2015 Lindani Phiri - 0.0.1-2
 - Fix miq application appliance location

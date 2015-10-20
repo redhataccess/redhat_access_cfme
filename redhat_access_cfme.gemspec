@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.summary     = "Summary of RedhatAccess."
   s.description = "Description of RedhatAccess."
 
-  s.files = Dir["{app,config,db,lib,deploy,public}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,ca,db,lib,deploy,public}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
   s.license       = 'MIT'
 
