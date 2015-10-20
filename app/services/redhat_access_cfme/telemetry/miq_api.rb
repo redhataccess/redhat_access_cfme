@@ -98,13 +98,16 @@ module RedhatAccessCfme
           if use_rhai_basic_auth?
             return rhai_basic_auth_opts(RHAI_PINNED_CA)
           end
+          Rails.logger.debug("#{self.class} Returning hosted SM cert auth options...")
           rhai_cert_auth_opts_sm(RHAI_PINNED_CA)
         when "rhn_satellite6"
           if use_rhai_basic_auth?
             return rhai_basic_auth_opts(SAT6_CA_FILE)
           end
+          Rails.logger.debug("#{self.class} Returning Sat 6 cert auth options...")
           rhai_cert_auth_opts_sm(SAT6_CA_FILE)
         when "rhn_satellite"
+          Rails.logger.debug("#{self.class} Returning Sat5 auth options...")
           rhai_basic_auth_opts(SAT5_CA_FILE)
         else
           return rhai_basic_auth_opts(RHAI_PINNED_CA) if use_rhai_basic_auth?
@@ -113,7 +116,7 @@ module RedhatAccessCfme
       end
 
       def rhai_basic_auth_opts(ca_file)
-        check_server_registration_required
+        #check_server_registration_required
         raise(ConfigError, "Cant read file #{ca_file}") unless File.readable?(ca_file)
         {
           :user       => rh_config.userid,
@@ -128,7 +131,7 @@ module RedhatAccessCfme
         [SM_CERT_FILE, SM_KEY_FILE, ca_file].each do |f|
           raise(ConfigError, "Cant read file #{f}") unless File.readable?(f)
         end
-        return
+        Rails.logger.debug("#{self.class} All cert keys readable")
         {
           :ssl_client_cert => OpenSSL::X509::Certificate.new(File.read(SM_CERT_FILE)),
           :ssl_client_key  => OpenSSL::PKey::RSA.new(File.read(SM_KEY_FILE)),
