@@ -47,7 +47,6 @@ module RedhatAccessCfme
     SUBSET_LIST_TYPE_KEY =   RedHatSupportLib::TelemetryApi::SUBSET_LIST_TYPE_KEY
     SUBSET_LIST_TYPE = RedHatSupportLib::TelemetryApi::SUBSET_LIST_TYPE_MACHINE_ID
 
-
     def get_branch_info
       render :status => 200, :json => {:branch_id => current_server_guid}
     end
@@ -95,7 +94,6 @@ module RedhatAccessCfme
                                 :http_proxy          => rhai_service_proxy,
                                 SUBSET_LIST_TYPE_KEY => SUBSET_LIST_TYPE)
 
-
       res = client.call_tapi(original_method,  URI.escape(resource), original_params, original_payload, nil)
       render :status => res[:code], :json => res[:data]
     end
@@ -121,8 +119,17 @@ module RedhatAccessCfme
                                 :http_proxy          => rhai_service_proxy,
                                 SUBSET_LIST_TYPE_KEY => SUBSET_LIST_TYPE)
 
-      res = client.call_tapi(original_method,  URI.escape(resource), original_params, original_payload, nil)
-      render :status => res[:code], :json => res[:data]
+      res = client.call_tapi(original_method, URI.escape(resource), original_params, original_payload, nil)
+      # 401/302 errors means our proxy is not configured right.
+      # Change it to 502 to distinguish with local applications 401 errors
+      resp_data = res[:data]
+      if (res[:code] == 401) || (res[:code] == 302)
+        res[:code] = 502
+        resp_data = {
+          :message => 'Authentication to the Insights Service failed.'
+        }
+      end
+      render :status => res[:code], :json => resp_data
     end
 
     def add_branch_to_params(params)
@@ -145,7 +152,6 @@ module RedhatAccessCfme
         :ssl_client_cert => OpenSSL::X509::Certificate.new(File.read("#{Dir.home}/consumer/cert.pem.sat6")),
         :ssl_client_key  => OpenSSL::PKey::RSA.new(File.read("#{Dir.home}/consumer/key.pem.sat6")),
         :verify_ssl      => OpenSSL::SSL::VERIFY_NONE
-
       } if Rails.env.development?
 
       rhai_service_auth_opts
