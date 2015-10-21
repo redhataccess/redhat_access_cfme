@@ -29,7 +29,7 @@ module RedhatAccessCfme
         begin
           machine_id = Vm.find_by_guid(guid).filesystems.find_by_name(MACHINE_ID_FILE_NAME).contents
         rescue Exception => e
-          #Rails.logger.error("No machine_id found for GUID #{guid}")
+          # Rails.logger.error("No machine_id found for GUID #{guid}")
         end
         machine_id
       end
@@ -39,7 +39,7 @@ module RedhatAccessCfme
       # Empty hash if none found
       ##########################################################################
       def get_users_machine_ids(userid)
-        #Rails.logger.error("Looking up vms for #{userid}")
+        # Rails.logger.error("Looking up vms for #{userid}")
         current_user_vms = Rbac.filtered(Vm.all, {:userid => userid})
         # Rails.logger.error("VMS are #{current_user_vms}")
         machine_id_guid_hash = {}
@@ -116,7 +116,7 @@ module RedhatAccessCfme
       end
 
       def rhai_basic_auth_opts(ca_file)
-        #check_server_registration_required
+        # check_server_registration_required
         raise(ConfigError, "Cant read file #{ca_file}") unless File.readable?(ca_file)
         {
           :user       => rh_config.userid,
@@ -156,6 +156,13 @@ module RedhatAccessCfme
         if require_appliance_registration?
           raise(ConfigError, "Server is not registered") unless current_server_registered?
         end
+      end
+
+      def rhai_service_connection_configured?
+        if !current_server_registered? && require_appliance_registration
+          return false
+        end
+        
       end
 
       #
