@@ -1,7 +1,12 @@
 - if !rhai_prereqs_met?
-  #serverunregistered
-    %p
-      = _("The current server is not registered to Red Hat.")
+  #serverunregistered.container.main-content.insights-main-content
+    %br
+    %br
+    %br
+    .alert.alert-info
+      %span.icon-info
+      %strong
+        = _("The current server is not registered to Red Hat.")
     %p
       = _("A valid Red Hat subscription is required to use this feature.")
 - else

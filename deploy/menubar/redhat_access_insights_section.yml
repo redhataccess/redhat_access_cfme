@@ -1,5 +1,5 @@
 type: section
-name: Access Insights
+name: Red Hat Insights
 id: accessInsights
 before: svc
 section_type: big_iframe

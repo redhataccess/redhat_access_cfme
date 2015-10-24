@@ -162,7 +162,7 @@ module RedhatAccessCfme
         if !current_server_registered? && require_appliance_registration
           return false
         end
-        
+
       end
 
       #

@@ -130,6 +130,11 @@ module RedhatAccessCfme
         resp_data = {
           :message => 'Authentication to the Insights service failed.'
         }
+      elsif (res[:code] != 200 )
+        res[:code] = 502
+        resp_data = {
+          :message => 'An error occurred while communicating with the Insights service.'
+        }
       end
       render :status => res[:code], :json => resp_data
     end

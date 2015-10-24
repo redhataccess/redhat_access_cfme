@@ -12,8 +12,8 @@
 %global rubygem_redhat_access_cfme_dir %{gem_dir}/gems/%{gem_name}-%{version}
 
 Name: %{?scl_prefix}rubygem-%{gem_name}
-Version: 0.0.2
-Release: 2%{?dist}
+Version: 0.0.3
+Release: 1%{?dist}
 Summary: Summary of RedhatAccess
 Group: Development/Languages
 License: MIT
@@ -126,6 +126,12 @@ popd
 %{gem_instdir}/test
 
 %changelog
+
+* Mon Oct 26 2015 Lindani Phiri <lphiri@redhat.com> - 0.0.3-1
+- Beta2 candidate build
+- Resolves 1272337
+
+
 * Tue Oct 12 2015 Lindani Phiri <lphiri@redhat.com> - 0.0.2-2
 - Pre Beta2 Test Build
 

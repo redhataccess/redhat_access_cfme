@@ -10,6 +10,7 @@
 
  *= require vendor
  *= require in-prod
+ *= require insights
  *= require_self
  *= require_tree .
  */
