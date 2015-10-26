@@ -1,11 +1,13 @@
+# require_dependency "redhat_access_cfme/configuration"
 module RedhatAccessCfme
   module Telemetry
     module MiqApi
       MACHINE_ID_FILE_NAME = '/etc/redhat-access-insights/machine-id'
+      DEFAULT_INSIGHTS_SVC_URL = 'https://cert-api.access.redhat.com/r/insights'
       SM_CERT_FILE = '/etc/pki/consumer/cert.pem'
       SM_KEY_FILE = '/etc/pki/consumer/key.pem'
       SAT6_CA_FILE = '/etc/rhsm/ca/katello-server-ca.pem'
-      SAT5_CA_FILE = '/etc/rhsm/ca/katello-server-ca.pem'
+      SAT5_CA_FILE = '/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT'
       RHAI_PINNED_CA = "#{RedhatAccessCfme::Engine.root}/ca/rh_cert-api_chain.pem"
 
       RegistrationConfig = Struct.new(
@@ -40,7 +42,7 @@ module RedhatAccessCfme
       ##########################################################################
       def get_users_machine_ids(userid)
         # Rails.logger.error("Looking up vms for #{userid}")
-        current_user_vms = Rbac.filtered(Vm.all, {:userid => userid})
+        current_user_vms = Rbac.filtered(Vm.all, :userid => userid)
         # Rails.logger.error("VMS are #{current_user_vms}")
         machine_id_guid_hash = {}
         current_user_vms.each do |vm|
@@ -68,13 +70,13 @@ module RedhatAccessCfme
       def  rhai_service_url
         case server_rh_registration_type
         when "sm_hosted"
-          return "https://cert-api.access.redhat.com/r/insights"
+          return DEFAULT_INSIGHTS_SVC_URL
         when "rhn_satellite6"
           return "https://#{rh_config.registration_server}/redhat_access/r/insights"
         when "rhn_satellite"
           return "https://#{rh_config.registration_server.delete!('XMLPRC')}/redhat_access/r/insights"
         else
-          return "https://cert-api.access.redhat.com/r/insights"
+          return DEFAULT_INSIGHTS_SVC_URL
         end
       end
 
@@ -98,16 +100,16 @@ module RedhatAccessCfme
           if use_rhai_basic_auth?
             return rhai_basic_auth_opts(RHAI_PINNED_CA)
           end
-          Rails.logger.debug("#{self.class} Returning hosted SM cert auth options...")
+          Rails.logger.debug("#{self.class} : Using hosted SM cert auth options...")
           rhai_cert_auth_opts_sm(RHAI_PINNED_CA)
         when "rhn_satellite6"
           if use_rhai_basic_auth?
             return rhai_basic_auth_opts(SAT6_CA_FILE)
           end
-          Rails.logger.debug("#{self.class} Returning Sat 6 cert auth options...")
+          Rails.logger.debug("#{self.class} : Using Sat 6 cert auth options...")
           rhai_cert_auth_opts_sm(SAT6_CA_FILE)
         when "rhn_satellite"
-          Rails.logger.debug("#{self.class} Returning Sat5 auth options...")
+          Rails.logger.debug("#{self.class} : Using Sat5 auth options...")
           rhai_basic_auth_opts(SAT5_CA_FILE)
         else
           return rhai_basic_auth_opts(RHAI_PINNED_CA) if use_rhai_basic_auth?
@@ -116,7 +118,7 @@ module RedhatAccessCfme
       end
 
       def rhai_basic_auth_opts(ca_file)
-        # check_server_registration_required
+        Rails.logger.debug("#{self.class} Using basic auth options...")
         raise(ConfigError, "Cant read file #{ca_file}") unless File.readable?(ca_file)
         {
           :user       => rh_config.userid,
@@ -127,7 +129,6 @@ module RedhatAccessCfme
       end
 
       def rhai_cert_auth_opts_sm(ca_file)
-        # check_server_registration_required
         [SM_CERT_FILE, SM_KEY_FILE, ca_file].each do |f|
           raise(ConfigError, "Cant read file #{f}") unless File.readable?(f)
         end
@@ -136,7 +137,7 @@ module RedhatAccessCfme
           :ssl_client_cert => OpenSSL::X509::Certificate.new(File.read(SM_CERT_FILE)),
           :ssl_client_key  => OpenSSL::PKey::RSA.new(File.read(SM_KEY_FILE)),
           :verify_ssl      => rhai_verify_ssl,
-          :ca_file         => ca_file
+          :ssl_ca_file     => ca_file
         }
       end
 
@@ -152,32 +153,31 @@ module RedhatAccessCfme
         MiqDatabase.first.registration_type
       end
 
-      def check_server_registration_required
-        if require_appliance_registration?
-          raise(ConfigError, "Server is not registered") unless current_server_registered?
-        end
-      end
-
       def rhai_service_connection_configured?
         if !current_server_registered? && require_appliance_registration
           return false
         end
-
       end
 
       #
       # Move the following methods to our config class so we can read them in
       #
       def use_rhai_basic_auth?
-        false # TODO: put in config file
+        basic_auth = REDHAT_ACCESS_CONFIG[:use_basic_auth] ? true : false
+        Rails.logger.debug("#{self.class} : basic auth config: #{basic_auth}")
+        basic_auth
       end
 
       def rhai_verify_ssl
-        OpenSSL::SSL::VERIFY_NONE # TODO: put in config file
+        verify_peer = REDHAT_ACCESS_CONFIG[:ssl_verify_peer] ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE
+        Rails.logger.debug("#{self.class} : SSL verify peer config : #{verify_peer}")
+        verify_peer
       end
 
       def require_appliance_registration?
-        true # TODO: put in config file
+        require_reg = REDHAT_ACCESS_CONFIG[:require_appliance_registration] ? true : false
+        Rails.logger.debug("#{self.class} : Require registration config: #{require_reg}")
+        require_reg
       end
     end
   end

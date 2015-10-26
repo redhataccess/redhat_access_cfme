@@ -155,11 +155,11 @@ module RedhatAccessCfme
       #   password: rh_config.password,
       #   verify_ssl: OpenSSL::SSL::VERIFY_NONE
       # }
-      return {
-        :ssl_client_cert => OpenSSL::X509::Certificate.new(File.read("#{Dir.home}/consumer/cert.pem")),
-        :ssl_client_key  => OpenSSL::PKey::RSA.new(File.read("#{Dir.home}/consumer/key.pem")),
-        :verify_ssl      => OpenSSL::SSL::VERIFY_NONE
-      } if Rails.env.development?
+      # return {
+      #   :ssl_client_cert => OpenSSL::X509::Certificate.new(File.read("#{Dir.home}/consumer/cert.pem")),
+      #   :ssl_client_key  => OpenSSL::PKey::RSA.new(File.read("#{Dir.home}/consumer/key.pem")),
+      #   :verify_ssl      => OpenSSL::SSL::VERIFY_NONE
+      # } if Rails.env.development?
 
       rhai_service_auth_opts
     end
