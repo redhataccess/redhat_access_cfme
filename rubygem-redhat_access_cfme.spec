@@ -12,8 +12,8 @@
 %global rubygem_redhat_access_cfme_dir %{gem_dir}/gems/%{gem_name}-%{version}
 
 Name: %{?scl_prefix}rubygem-%{gem_name}
-Version: 0.0.3
-Release: 2%{?dist}
+Version: 0.0.4
+Release: 1%{?dist}
 Summary: Summary of RedhatAccess
 Group: Development/Languages
 License: MIT
@@ -127,6 +127,9 @@ popd
 
 %changelog
 
+* Wed Oct 28 2015 Lindani Phiri <lphiri@redhat.com> - 0.0.4-1
+- Beta2 candidate build 2 - Add missing X-CSRF Token for Angularjs Code
+
 * Mon Oct 26 2015 Lindani Phiri <lphiri@redhat.com> - 0.0.3-2
 - Beta2 candidate build - rebuild to fix stale rpm (was missing files)
 
@@ -135,7 +138,7 @@ popd
 - Resolves 1272337
 
 
-* Tue Oct 12 2015 Lindani Phiri <lphiri@redhat.com> - 0.0.2-2
+* Tue Oct 13 2015 Lindani Phiri <lphiri@redhat.com> - 0.0.2-2
 - Pre Beta2 Test Build
 
 * Fri Oct 2 2015 Lindani Phiri <lphiri@redhat.com> - 0.0.2-1

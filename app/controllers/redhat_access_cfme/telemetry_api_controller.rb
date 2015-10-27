@@ -122,18 +122,13 @@ module RedhatAccessCfme
                                 SUBSET_LIST_TYPE_KEY => SUBSET_LIST_TYPE)
 
       res = client.call_tapi(original_method, URI.escape(resource), original_params, original_payload, nil)
-      # 401/302 errors means our proxy is not configured right.
+      # 401 errors means our proxy is not configured right.
       # Change it to 502 to distinguish with local applications 401 errors
       resp_data = res[:data]
-      if (res[:code] == 401) || (res[:code] == 302)
+      if (res[:code] == 401)
         res[:code] = 502
         resp_data = {
           :message => 'Authentication to the Insights service failed.'
-        }
-      elsif (res[:code] != 200 )
-        res[:code] = 502
-        resp_data = {
-          :message => 'An error occurred while communicating with the Insights service.'
         }
       end
       render :status => res[:code], :json => resp_data
