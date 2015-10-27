@@ -13,7 +13,7 @@
 
 Name: %{?scl_prefix}rubygem-%{gem_name}
 Version: 0.0.3
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: Summary of RedhatAccess
 Group: Development/Languages
 License: MIT
@@ -126,6 +126,9 @@ popd
 %{gem_instdir}/test
 
 %changelog
+
+* Mon Oct 26 2015 Lindani Phiri <lphiri@redhat.com> - 0.0.3-2
+- Beta2 candidate build - rebuild to fix stale rpm (was missing files)
 
 * Mon Oct 26 2015 Lindani Phiri <lphiri@redhat.com> - 0.0.3-1
 - Beta2 candidate build
