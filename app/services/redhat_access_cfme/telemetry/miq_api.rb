@@ -31,7 +31,7 @@ module RedhatAccessCfme
         begin
           machine_id = Vm.find_by_guid(guid).filesystems.find_by_name(MACHINE_ID_FILE_NAME).contents
         rescue Exception => e
-          # Rails.logger.error("No machine_id found for GUID #{guid}")
+          # $rails_logr.error("No machine_id found for GUID #{guid}")
         end
         machine_id
       end
@@ -41,9 +41,9 @@ module RedhatAccessCfme
       # Empty hash if none found
       ##########################################################################
       def get_users_machine_ids(userid)
-        # Rails.logger.error("Looking up vms for #{userid}")
+        # $rails_logr.error("Looking up vms for #{userid}")
         current_user_vms = Rbac.filtered(Vm.all, :userid => userid)
-        # Rails.logger.error("VMS are #{current_user_vms}")
+        # $rails_logr.error("VMS are #{current_user_vms}")
         machine_id_guid_hash = {}
         current_user_vms.each do |vm|
           machine_id = get_vm_machine_id(vm.guid)
@@ -100,16 +100,16 @@ module RedhatAccessCfme
           if use_rhai_basic_auth?
             return rhai_basic_auth_opts(RHAI_PINNED_CA)
           end
-          Rails.logger.debug("#{self.class} : Using hosted SM cert auth options...")
+          $log.debug("#{self.class} : Using hosted SM cert auth options...")
           rhai_cert_auth_opts_sm(RHAI_PINNED_CA)
         when "rhn_satellite6"
           if use_rhai_basic_auth?
             return rhai_basic_auth_opts(SAT6_CA_FILE)
           end
-          Rails.logger.debug("#{self.class} : Using Sat 6 cert auth options...")
+          $log.debug("#{self.class} : Using Sat 6 cert auth options...")
           rhai_cert_auth_opts_sm(SAT6_CA_FILE)
         when "rhn_satellite"
-          Rails.logger.debug("#{self.class} : Using Sat5 auth options...")
+          $log.debug("#{self.class} : Using Sat5 auth options...")
           rhai_basic_auth_opts(SAT5_CA_FILE)
         else
           return rhai_basic_auth_opts(RHAI_PINNED_CA) if use_rhai_basic_auth?
@@ -118,7 +118,7 @@ module RedhatAccessCfme
       end
 
       def rhai_basic_auth_opts(ca_file)
-        Rails.logger.debug("#{self.class} Using basic auth options...")
+        $log.debug("#{self.class} Using basic auth options...")
         raise(ConfigError, "Cant read file #{ca_file}") unless File.readable?(ca_file)
         {
           :user       => rh_config.userid,
@@ -132,7 +132,7 @@ module RedhatAccessCfme
         [SM_CERT_FILE, SM_KEY_FILE, ca_file].each do |f|
           raise(ConfigError, "Cant read file #{f}") unless File.readable?(f)
         end
-        Rails.logger.debug("#{self.class} All cert keys readable")
+        $log.debug("#{self.class} All cert keys readable")
         {
           :ssl_client_cert => OpenSSL::X509::Certificate.new(File.read(SM_CERT_FILE)),
           :ssl_client_key  => OpenSSL::PKey::RSA.new(File.read(SM_KEY_FILE)),
@@ -164,19 +164,19 @@ module RedhatAccessCfme
       #
       def use_rhai_basic_auth?
         basic_auth = REDHAT_ACCESS_CONFIG[:use_basic_auth] ? true : false
-        Rails.logger.debug("#{self.class} : basic auth config: #{basic_auth}")
+        $log.debug("#{self.class} : basic auth config: #{basic_auth}")
         basic_auth
       end
 
       def rhai_verify_ssl
         verify_peer = REDHAT_ACCESS_CONFIG[:ssl_verify_peer] ? OpenSSL::SSL::VERIFY_PEER : OpenSSL::SSL::VERIFY_NONE
-        Rails.logger.debug("#{self.class} : SSL verify peer config : #{verify_peer}")
+        $log.debug("#{self.class} : SSL verify peer config : #{verify_peer}")
         verify_peer
       end
 
       def require_appliance_registration?
         require_reg = REDHAT_ACCESS_CONFIG[:require_appliance_registration] ? true : false
-        Rails.logger.debug("#{self.class} : Require registration config: #{require_reg}")
+        $log.debug("#{self.class} : Require registration config: #{require_reg}")
         require_reg
       end
     end

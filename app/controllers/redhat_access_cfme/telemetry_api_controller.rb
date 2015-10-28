@@ -2,46 +2,6 @@ require 'redhat_access_lib'
 require_dependency "redhat_access_cfme/version"
 
 module RedhatAccessCfme
-  class PortalClient < RedHatSupportLib::TelemetryApi::Client
-    include RedhatAccessCfme::Telemetry::MiqApi
-
-    def initialize(upload_url, api_url, creds, context, optional)
-      super(upload_url, api_url, creds, optional)
-      @context = context
-    end
-
-    def get_machines
-      #['9186bf73-93c1-4855-9e04-2ce3c9f13125', '286ef64a-5d9f-49cb-a321-a0b88307d87d', 'e388e982-d4ee-43d3-9670-56051b23155b'].sort
-      list = @context.get_machine_ids.values.sort
-      if list.empty?
-        list = ['NULL_SET']
-      end
-      list
-    end
-
-    # Returns the branch id of the current appliance
-    def get_branch_id
-      current_server_guid
-    end
-
-    def get_auth_opts(_creds)
-      @context.get_auth_opts
-    end
-  end
-
-  class TestLogger
-    def initialize(logger)
-      @logger = logger
-    end
-
-    def error(msg)
-      @logger.error msg
-    end
-
-    def debug(msg)
-      @logger.info msg
-    end
-  end
 
   class TelemetryApiController < RedhatAccessCfme::ApplicationController
     include RedhatAccessCfme::Telemetry::MiqApi
@@ -86,15 +46,15 @@ module RedhatAccessCfme
         original_payload = get_file_data(params)
       end
 
-      client = PortalClient.new(rhai_service_url,
-                                rhai_service_url,
-                                {},
-                                self,
-                                :logger              => TestLogger.new(Rails.logger),
-                                :user_agent          => http_user_agent,
-                                :user_headers        => {'content-type' => 'application/json', 'accept' => 'application/json'},
-                                :http_proxy          => rhai_service_proxy,
-                                SUBSET_LIST_TYPE_KEY => SUBSET_LIST_TYPE)
+      client = RedhatAccessCfme::Telemetry::PortalClient.new(rhai_service_url,
+                                                             rhai_service_url,
+                                                             {},
+                                                             self,
+                                                             :logger              => $log,
+                                                             :user_agent          => http_user_agent,
+                                                             :user_headers        => {'content-type' => 'application/json', 'accept' => 'application/json'},
+                                                             :http_proxy          => rhai_service_proxy,
+                                                             SUBSET_LIST_TYPE_KEY => SUBSET_LIST_TYPE)
 
       res = client.call_tapi(original_method,  URI.escape(resource), original_params, original_payload, nil)
       render :status => res[:code], :json => res[:data]
@@ -111,15 +71,15 @@ module RedhatAccessCfme
       if params[:filedata]
         original_payload = get_file_data(params)
       end
-      client = PortalClient.new(rhai_service_url,
-                                rhai_service_url,
-                                {},
-                                self,
-                                :logger              => TestLogger.new(Rails.logger),
-                                :user_agent          => http_user_agent,
-                                :user_headers        => {'content-type' => 'application/json', 'accept' => 'application/json'},
-                                :http_proxy          => rhai_service_proxy,
-                                SUBSET_LIST_TYPE_KEY => SUBSET_LIST_TYPE)
+      client = RedhatAccessCfme::Telemetry::PortalClient.new(rhai_service_url,
+                                                             rhai_service_url,
+                                                             {},
+                                                             self,
+                                                             :logger              => $log,
+                                                             :user_agent          => http_user_agent,
+                                                             :user_headers        => {'content-type' => 'application/json', 'accept' => 'application/json'},
+                                                             :http_proxy          => rhai_service_proxy,
+                                                             SUBSET_LIST_TYPE_KEY => SUBSET_LIST_TYPE)
 
       res = client.call_tapi(original_method, URI.escape(resource), original_params, original_payload, nil)
       # 401 errors means our proxy is not configured right.
@@ -138,24 +98,13 @@ module RedhatAccessCfme
       if params.nil?
         params = {}
       end
-      # Rails.logger.error("Proxy debug is #{rhai_service_auth_opts}")
+      # $rails_logr.error("Proxy debug is #{rhai_service_auth_opts}")
       # params[:branch_id] = current_server_guid
 
       params
     end
 
     def get_auth_opts
-      # return {
-      #   user: rh_config.userid,
-      #   password: rh_config.password,
-      #   verify_ssl: OpenSSL::SSL::VERIFY_NONE
-      # }
-      # return {
-      #   :ssl_client_cert => OpenSSL::X509::Certificate.new(File.read("#{Dir.home}/consumer/cert.pem")),
-      #   :ssl_client_key  => OpenSSL::PKey::RSA.new(File.read("#{Dir.home}/consumer/key.pem")),
-      #   :verify_ssl      => OpenSSL::SSL::VERIFY_NONE
-      # } if Rails.env.development?
-
       rhai_service_auth_opts
     end
 

@@ -12,7 +12,7 @@
 %global rubygem_redhat_access_cfme_dir %{gem_dir}/gems/%{gem_name}-%{version}
 
 Name: %{?scl_prefix}rubygem-%{gem_name}
-Version: 0.0.4
+Version: 0.0.5
 Release: 1%{?dist}
 Summary: Summary of RedhatAccess
 Group: Development/Languages
@@ -126,6 +126,10 @@ popd
 %{gem_instdir}/test
 
 %changelog
+
+* Wed Oct 28 2015 Lindani Phiri <lphiri@redhat.com> - 0.0.5-1
+- Refactor portal client
+- Move logs to evm.log
 
 * Wed Oct 28 2015 Lindani Phiri <lphiri@redhat.com> - 0.0.4-1
 - Beta2 candidate build 2 - Add missing X-CSRF Token for Angularjs Code
