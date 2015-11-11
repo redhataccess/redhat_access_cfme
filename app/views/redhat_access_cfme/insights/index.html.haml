@@ -6,9 +6,9 @@
     .alert.alert-info
       %span.icon-info
       %strong
-        = _("The current server is not registered to Red Hat.")
+        = _("This appliance is not registered to Red Hat.")
     %p
-      = _("A valid Red Hat subscription is required to use this feature.")
+      = _("To use Red Hat Insights, the appliance must be registered to Red Hat Subscription Management  or Satellite (version 6.1 or newer).")
 - else
   .container.main-content.insights-main-content{"ng-app" => "RedhatAccessInsights"}
     .wrapper{"ui-view" => ""}

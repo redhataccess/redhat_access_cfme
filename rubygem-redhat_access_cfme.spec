@@ -12,7 +12,7 @@
 %global rubygem_redhat_access_cfme_dir %{gem_dir}/gems/%{gem_name}-%{version}
 
 Name: %{?scl_prefix}rubygem-%{gem_name}
-Version: 0.0.5
+Version: 0.0.6
 Release: 1%{?dist}
 Summary: Summary of RedhatAccess
 Group: Development/Languages
@@ -23,7 +23,7 @@ Source0: %{gem_name}-%{version}.gem
 Requires: %{?scl_prefix}ruby(release)
 Requires: %{?scl_prefix}ruby(rubygems)
 Requires: %{?scl_prefix}ruby
-Requires: %{?scl_prefix}rubygem-redhat_access_lib >= 0.0.5
+Requires: %{?scl_prefix}rubygem-redhat_access_lib >= 0.0.6
 BuildRequires: %{?scl_prefix}rubygems-devel
 BuildRequires: %{?scl_prefix}ruby-devel
 
@@ -127,7 +127,10 @@ popd
 
 %changelog
 
-* Wed Oct 28 2015 Lindani Phiri <lphiri@redhat.com> - 0.0.5-1
+* Mon Nov 23 2015 Lindani Phiri <lphiri@redhat.com> - 0.0.6-1
+- Resolves BZ 1282576
+
+* Mon Nov 16 2015 Lindani Phiri <lphiri@redhat.com> - 0.0.5-1
 - Refactor portal client
 - Move logs to evm.log
 

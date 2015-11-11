@@ -17,6 +17,6 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,ca,db,lib,deploy,public}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
   s.license       = 'MIT'
-  s.add_dependency "redhat_access_lib" , ">=0.0.5"
+  s.add_dependency "redhat_access_lib" , ">=0.0.6"
 
 end

@@ -2,7 +2,6 @@ require 'redhat_access_lib'
 require_dependency "redhat_access_cfme/version"
 
 module RedhatAccessCfme
-
   class TelemetryApiController < RedhatAccessCfme::ApplicationController
     include RedhatAccessCfme::Telemetry::MiqApi
 
@@ -41,7 +40,6 @@ module RedhatAccessCfme
       original_params  = request.query_parameters
       original_payload = request.request_parameters[controller_name]
       resource         = "uploads/#{params[:id]}"
-
       if params[:file]
         original_payload = get_file_data(params)
       end
@@ -52,7 +50,7 @@ module RedhatAccessCfme
                                                              self,
                                                              :logger              => $log,
                                                              :user_agent          => http_user_agent,
-                                                             :user_headers        => {'content-type' => 'application/json', 'accept' => 'application/json'},
+                                                             :headers             => {'content-type' => 'application/json', 'accept' => 'application/json'},
                                                              :http_proxy          => rhai_service_proxy,
                                                              SUBSET_LIST_TYPE_KEY => SUBSET_LIST_TYPE)
 
@@ -64,10 +62,12 @@ module RedhatAccessCfme
     def proxy
       original_method  = request.method
       original_params  = request.query_parameters
-      original_params  = add_branch_to_params(original_params)
-      original_payload = request.request_parameters[controller_name]
       resource         = params[:path].nil? ? "/" : params[:path]
-
+      original_params  = add_branch_to_params(original_params, resource)
+      original_payload = request.request_parameters[controller_name]
+      if request.post? && request.raw_post
+        original_payload = request.raw_post.clone
+      end
       if params[:filedata]
         original_payload = get_file_data(params)
       end
@@ -94,13 +94,15 @@ module RedhatAccessCfme
       render :status => res[:code], :json => resp_data
     end
 
-    def add_branch_to_params(params)
+    def add_branch_to_params(params, resource)
       if params.nil?
         params = {}
       end
-      # $rails_logr.error("Proxy debug is #{rhai_service_auth_opts}")
-      # params[:branch_id] = current_server_guid
-
+      unless  RedHatSupportLib::TelemetryApi::SUBSETTED_RESOURCES.key?(resource)
+        # I know, I know its confusing, but we only set the branch id if
+        # the resource is not subs
+        params[:branch_id] = current_server_guid
+      end
       params
     end
 

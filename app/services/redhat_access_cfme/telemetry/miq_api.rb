@@ -72,9 +72,9 @@ module RedhatAccessCfme
         when "sm_hosted"
           return DEFAULT_INSIGHTS_SVC_URL
         when "rhn_satellite6"
-          return "https://#{rh_config.registration_server}/redhat_access/r/insights"
+          return "#{sanitize_uri(rh_config.registration_server)}/redhat_access/r/insights"
         when "rhn_satellite"
-          return "https://#{rh_config.registration_server.delete!('XMLPRC')}/redhat_access/r/insights"
+          return "#{sanitize_uri(rh_config.registration_server.delete!('XMLPRC'))}/redhat_access/r/insights"
         else
           return DEFAULT_INSIGHTS_SVC_URL
         end
@@ -178,6 +178,25 @@ module RedhatAccessCfme
         require_reg = REDHAT_ACCESS_CONFIG[:require_appliance_registration] ? true : false
         $log.debug("#{self.class} : Require registration config: #{require_reg}")
         require_reg
+      end
+
+
+      def sanitize_uri(string)
+        if uri?(string)
+          return string
+        else
+          #assume https
+          return "https://#{string}"
+        end
+      end
+
+      def uri?(string)
+        uri = URI.parse(string)
+        %w( http https ).include?(uri.scheme)
+      rescue URI::BadURIError
+        false
+      rescue URI::InvalidURIError
+        false
       end
     end
   end

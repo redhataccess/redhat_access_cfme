@@ -27,6 +27,11 @@ body {
 	color: #C00;
 }
 
+.insights-main-content .hidden-in-product {
+	display: none;
+}
+
+
 /* line 5, /home/lphiri/.rvm/gems/ruby-2.0.0-p247/gems/patternfly-sass-2.4.0/assets/stylesheets/patternfly/_alerts.scss */
 .insights-main-content .alert {
   border-width: 2px;
