@@ -13,7 +13,7 @@
       $urlRouterProvider.otherwise('/overview')
       $locationProvider.html5Mode(true);
       InsightsConfigProvider.setApiRoot('/redhat_access/r/insights/');
-      InsightsConfigProvider.setGettingStartedLink('https://access.redhat.com/insights/getting-started/');
+      InsightsConfigProvider.setGettingStartedLink('https://access.redhat.com/insights/getting-started/cloudforms/');
     }
   ]);
 }());

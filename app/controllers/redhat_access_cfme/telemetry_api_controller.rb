@@ -98,9 +98,7 @@ module RedhatAccessCfme
       if params.nil?
         params = {}
       end
-      unless  RedHatSupportLib::TelemetryApi::SUBSETTED_RESOURCES.key?(resource)
-        # I know, I know its confusing, but we only set the branch id if
-        # the resource is not subs
+      if resource and resource.start_with?('acks')
         params[:branch_id] = current_server_guid
       end
       params
