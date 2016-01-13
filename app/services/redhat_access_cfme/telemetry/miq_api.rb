@@ -33,7 +33,7 @@ module RedhatAccessCfme
         rescue Exception => e
           # $rails_logr.error("No machine_id found for GUID #{guid}")
         end
-        machine_id
+        machine_id.nil? ? machine_id : machine_id.strip
       end
 
       ##########################################################################
