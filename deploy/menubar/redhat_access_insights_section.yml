@@ -1,6 +1,7 @@
 type: section
 name: Red Hat Insights
 id: accessInsights
+icon: fa fa-pie-chart
 before: svc
 section_type: big_iframe
 href: /redhat_access/insights/

@@ -12,7 +12,7 @@
 %global rubygem_redhat_access_cfme_dir %{gem_dir}/gems/%{gem_name}-%{version}
 
 Name: %{?scl_prefix}rubygem-%{gem_name}
-Version: 1.0.1
+Version: 1.0.2
 Release: 1%{?dist}
 Summary: Summary of RedhatAccess
 Group: Development/Languages
@@ -125,6 +125,9 @@ popd
 %{gem_instdir}/test
 
 %changelog
+
+* Thu Apr 28 2016 Lindani Phiri <lphiri@redhat.com> - 1.0.2-1
+- BZ 1329540
 
 * Mon Mar 7 2016 Lindani Phiri <lphiri@redhat.com> - 1.0.1-1
 - Resolves BZ 1315459
