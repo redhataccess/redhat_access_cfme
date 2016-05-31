@@ -9,6 +9,7 @@
 %global miq_role_dir %miq_dir/db/fixtures/miq_product_roles
 %global miq_feature_dir %miq_dir/db/fixtures/miq_product_features
 %global miq_menu_dir %miq_dir/product/menubar
+%global miq_shortcuts_dir %miq_dir/db/fixtures/miq_shortcuts
 %global rubygem_redhat_access_cfme_dir %{gem_dir}/gems/%{gem_name}-%{version}
 
 Name: %{?scl_prefix}rubygem-%{gem_name}
@@ -73,6 +74,7 @@ mkdir -p %{buildroot}%{miq_bundlerd_dir}
 mkdir -p %{buildroot}%{miq_role_dir}
 mkdir -p %{buildroot}%{miq_feature_dir}
 mkdir -p %{buildroot}%{miq_menu_dir}
+mkdir -p %{buildroot}%{miq_shortcuts_dir}
 
 mkdir -p %{buildroot}%{gem_dir}
 cp -a .%{gem_dir}/* \
@@ -86,6 +88,7 @@ GEMFILE
 cp -pa .%{rubygem_redhat_access_cfme_dir}/deploy/miq_user_roles/* %{buildroot}%{miq_role_dir}
 cp -pa .%{rubygem_redhat_access_cfme_dir}/deploy/miq_product_features/* %{buildroot}%{miq_feature_dir}
 cp -pa .%{rubygem_redhat_access_cfme_dir}/deploy/menubar/* %{buildroot}%{miq_menu_dir}
+cp -pa .%{rubugem_redhat_access_cfme_dir}/deploy/miq_shortcuts/* %{buildroot}%{miq_shortcuts_dir}
 
 
 # Run the test suite
@@ -103,6 +106,8 @@ popd
 %{miq_menu_dir}/redhat_access_insights_item_rules.yml
 %{miq_menu_dir}/redhat_access_insights_item_systems.yml
 %{miq_menu_dir}/redhat_access_insights_item_overview.yml
+
+%{miq_shortcuts_dir}/redhat_access_miq_shortcuts.yml
 
 %{miq_bundlerd_dir}/%{gem_name}.rb
 
