@@ -1,0 +1,6 @@
+---
+- :name: redhat_access_insights
+  :description: Red Hat Access Insights
+  :url: /dashboard/iframe?sid=accessInsights
+  :rbac_feature_name: redhat_access_insights
+  :startup: true
