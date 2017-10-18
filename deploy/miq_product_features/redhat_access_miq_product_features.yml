@@ -21,4 +21,8 @@
   :description: Access to Red Hat Access Systems Page
   :feature_type: node
   :identifier: redhat_access_insights_systems
+- :name: Red Hat Access Insights Actions
+  :description: Access to Red Hat Access Actions Page
+  :feature_type: node
+  :identifier: redhat_access_insights_actions
 

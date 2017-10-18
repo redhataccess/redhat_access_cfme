@@ -120,9 +120,10 @@ module RedhatAccessCfme
       def rhai_basic_auth_opts(ca_file)
         $log.debug("#{self.class} Using basic auth options...")
         raise(ConfigError, "Cant read file #{ca_file}") unless File.readable?(ca_file)
+
         {
-          :user       => rh_config.userid,
-          :password   => rh_config.password,
+          :user       => REDHAT_ACCESS_CONFIG[:user],
+          :password   => REDHAT_ACCESS_CONFIG[:password],
           :verify_ssl => rhai_verify_ssl,
           :ca_file    => ca_file
         }

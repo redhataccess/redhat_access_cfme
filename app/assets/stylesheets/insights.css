@@ -5,7 +5,7 @@ body {
 .hidden-in-product {
     display: none
 }
-input.rounded, .error-info textarea.rounded.changed.ng-dirty, .error-info select.rounded.changed.ng-dirty {
+/* input.rounded, .error-info textarea.rounded.changed.ng-dirty, .error-info select.rounded.changed.ng-dirty {
     border: 4px solid #ebeef0;
     padding: 6px 8px;
     padding: 0.375rem 0.5rem;
@@ -127,7 +127,7 @@ input.cmn-toggle:checked+label:before, .error-info textarea.cmn-toggle.changed.n
     background-color: #949794
 }
 input.cmn-toggle-round:checked+label:after, .error-info textarea.cmn-toggle-round.changed.ng-dirty:checked+label:after, .error-info select.cmn-toggle-round.changed.ng-dirty:checked+label:after {
-    margin-left: 40px
+    margin-left: 40px */
 }
 .insights-main-content .alert {
 	font-weight: bold;

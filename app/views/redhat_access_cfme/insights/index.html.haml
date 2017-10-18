@@ -10,5 +10,5 @@
     %p
       = _("To use Red Hat Insights, the appliance must be registered to Red Hat Subscription Management  or Satellite (version 6.1 or newer).")
 - else
-  .container.main-content.insights-main-content{"ng-app" => "RedhatAccessInsights"}
-    .wrapper{"ui-view" => ""}
+  .container.main-content.insights-main-content.insights-app-overview{"ng-app" => "RedhatAccessInsights"}
+    .wrapper.ng-cloak.in-prod{"ui-view" => ""}

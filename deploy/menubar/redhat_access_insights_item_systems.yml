@@ -1,5 +1,5 @@
 type: item
-name: Systems
+name: Inventory
 id: accessInsightsSystems
 
 
@@ -8,5 +8,5 @@ rbac:
   feature: redhat_access_insights_systems
 
 parent: accessInsights
-href: /redhat_access/insights/systems
+href: /redhat_access/insights/inventory
 item_type: big_iframe

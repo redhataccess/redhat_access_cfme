@@ -1,1 +1,5 @@
 :ssl_verify_peer : false
+:use_basic_auth  : false
+:password : XXXX
+:user : XXXX
+:use_test_vms : false

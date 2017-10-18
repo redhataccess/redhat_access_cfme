@@ -1,0 +1,11 @@
+type: item
+name: Actions
+id: accessInsightsActions
+
+feature: redhat_access_insights_actions
+rbac:
+  feature: redhat_access_insights_actions
+
+parent: accessInsights
+href: /redhat_access/insights/actions
+item_type: big_iframe

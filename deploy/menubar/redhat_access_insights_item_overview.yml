@@ -7,5 +7,5 @@ rbac:
   feature: redhat_access_insights_overview
 
 parent: accessInsights
-href: /redhat_access/insights/
+href: /redhat_access/insights/overview
 item_type: big_iframe

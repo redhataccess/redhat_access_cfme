@@ -3,7 +3,7 @@
 Session.vim
 .agignore
 tags
-
+config/test_vm_ids.yml
 #folder for user files
 .local
 .idea

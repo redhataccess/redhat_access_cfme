@@ -24,7 +24,13 @@ module RedhatAccessCfme
     end
 
     def get_machine_ids
-      users_machine_ids = get_users_machine_ids(current_user.userid)
+      if Rails.env.development?
+        if REDHAT_ACCESS_CONFIG[:use_test_vms]
+           $log.error("#{self.class} ids are #{INSIGHTS_TEST_VMS}")
+           return INSIGHTS_TEST_VMS[:ids]
+        end
+      end
+      users_machine_ids = get_users_machine_ids(current_user.userid).values
     end
 
     def get_file_data(params)

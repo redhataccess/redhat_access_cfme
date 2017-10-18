@@ -3,8 +3,9 @@
 - :name: EvmRole-super_administrator
   :miq_product_feature_identifiers:
     - redhat_access_insights
-    - redhat_access_insights_reports
+    - redhat_access_insights_overview
     - redhat_access_insights_admin
     - redhat_access_insights_rules
     - redhat_access_insights_systems
+    - redhat_access_insights_actions
 
