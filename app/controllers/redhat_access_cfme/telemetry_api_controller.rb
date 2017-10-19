@@ -26,7 +26,7 @@ module RedhatAccessCfme
     def get_machine_ids
       if Rails.env.development?
         if REDHAT_ACCESS_CONFIG[:use_test_vms]
-           $log.error("#{self.class} ids are #{INSIGHTS_TEST_VMS}")
+           $log.debug("#{self.class} ids are #{INSIGHTS_TEST_VMS}")
            return INSIGHTS_TEST_VMS[:ids]
         end
       end

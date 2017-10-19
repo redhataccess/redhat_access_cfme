@@ -2,4 +2,4 @@
 :use_basic_auth  : false
 :password : XXXX
 :user : XXXX
-:use_test_vms : false
+:use_test_vms : true
