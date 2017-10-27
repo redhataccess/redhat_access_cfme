@@ -212,3 +212,8 @@ input.cmn-toggle-round:checked+label:after, .error-info textarea.cmn-toggle-roun
 .insights-main-content .alert-danger .alert-link {
   color: #1a1a1a;
 }
+
+
+.insights-main-content {
+	padding-top: 0;
+}
