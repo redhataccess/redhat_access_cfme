@@ -103,9 +103,10 @@ popd
 %{miq_feature_dir}/redhat_access_miq_product_features.yml
 
 %{miq_menu_dir}/redhat_access_insights_section.yml
-%{miq_menu_dir}/redhat_access_insights_item_rules.yml
 %{miq_menu_dir}/redhat_access_insights_item_systems.yml
 %{miq_menu_dir}/redhat_access_insights_item_overview.yml
+%{miq_menu_dir}/redhat_access_insights_item_actions.yml
+%{miq_menu_dir}/redhat_access_insights_item_rules.yml
 
 %{miq_shortcuts_dir}/redhat_access_miq_shortcuts.yml
 
