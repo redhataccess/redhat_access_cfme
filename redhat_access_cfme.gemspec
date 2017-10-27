@@ -14,9 +14,9 @@ Gem::Specification.new do |s|
   s.summary     = "Summary of RedhatAccess."
   s.description = "Description of RedhatAccess."
 
-  s.files = Dir["{app,config,ca,db,lib,deploy}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,ca,db,lib,deploy,vendor}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
   s.license       = 'MIT'
-  s.add_dependency "redhat_access_lib" , ">=0.0.6"
+  s.add_dependency "redhat_access_lib" , ">=1.1.2"
 
 end

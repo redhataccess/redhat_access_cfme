@@ -13,18 +13,18 @@
 %global rubygem_redhat_access_cfme_dir %{gem_dir}/gems/%{gem_name}-%{version}
 
 Name: %{?scl_prefix}rubygem-%{gem_name}
-Version: 1.0.2
+Version: 1.1.0
 Release: 1%{?dist}
 Summary: Summary of RedhatAccess
 Group: Development/Languages
 License: MIT
-URL: http://labs-git.usersys.redhat.com/labs/redhat-access-proactive-cfme
+URL: https://github.com/redhataccess/redhat_access_cfme
 Source0: %{gem_name}-%{version}.gem
 
 Requires: %{?scl_prefix}ruby(release)
 Requires: %{?scl_prefix}ruby(rubygems)
 Requires: %{?scl_prefix}ruby
-Requires: %{?scl_prefix}rubygem-redhat_access_lib >= 0.0.6
+Requires: %{?scl_prefix}rubygem-redhat_access_lib >= 1.1.2
 BuildRequires: %{?scl_prefix}rubygems-devel
 BuildRequires: %{?scl_prefix}ruby-devel
 
