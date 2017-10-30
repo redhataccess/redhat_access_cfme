@@ -121,6 +121,7 @@ popd
 %{gem_instdir}/config
 %{gem_instdir}/deploy
 %{gem_instdir}/ca
+%{gem_instdir}/vendor
 
 %{gem_libdir}
 %license %{gem_instdir}/MIT-LICENSE
