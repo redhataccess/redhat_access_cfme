@@ -3,6 +3,7 @@ module RedhatAccessCfme
   module Telemetry
     module MiqApi
       MACHINE_ID_FILE_NAME = '/etc/redhat-access-insights/machine-id'
+      MACHINE_ID_CUSTOM_KEY = 'rh_insights_id'
       DEFAULT_INSIGHTS_SVC_URL = 'https://cert-api.access.redhat.com/r/insights'
       SM_CERT_FILE = '/etc/pki/consumer/cert.pem'
       SM_KEY_FILE = '/etc/pki/consumer/key.pem'
@@ -47,8 +48,10 @@ module RedhatAccessCfme
         machine_id_guid_hash = {}
         current_user_vms.each do |vm|
           machine_id = get_vm_machine_id(vm.guid)
+          #We check custom attribute as fall back to support Insights without SSA
+          machine_id = vm.miq_custom_get(MACHINE_ID_CUSTOM_KEY) if machine_id.nil? || machine_id.empty?
           if machine_id
-            machine_id_guid_hash[vm.guid] = machine_id
+            machine_id_guid_hash[vm.guid] = machine_id.strip
           end
         end
         machine_id_guid_hash
