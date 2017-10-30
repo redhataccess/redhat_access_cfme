@@ -3,7 +3,7 @@ module RedhatAccessCfme
   module Telemetry
     module MiqApi
       MACHINE_ID_FILE_NAME = '/etc/redhat-access-insights/machine-id'
-      MACHINE_ID_CUSTOM_KEY = 'rh_insights_id'
+      MACHINE_ID_CUSTOM_KEY = 'rh_insights_machine_id'
       DEFAULT_INSIGHTS_SVC_URL = 'https://cert-api.access.redhat.com/r/insights'
       SM_CERT_FILE = '/etc/pki/consumer/cert.pem'
       SM_KEY_FILE = '/etc/pki/consumer/key.pem'
