@@ -13,7 +13,7 @@
 %global rubygem_redhat_access_cfme_dir %{gem_dir}/gems/%{gem_name}-%{version}
 
 Name: %{?scl_prefix}rubygem-%{gem_name}
-Version: 1.1.0
+Version: 2.0.0
 Release: 1%{?dist}
 Summary: Summary of RedhatAccess
 Group: Development/Languages
@@ -25,6 +25,8 @@ Requires: %{?scl_prefix}ruby(release)
 Requires: %{?scl_prefix}ruby(rubygems)
 Requires: %{?scl_prefix}ruby
 Requires: %{?scl_prefix}rubygem-redhat_access_lib >= 1.1.2
+#Not happy with hardcoded previous scl_prefix here but there is no macro to determine it:
+Obsoletes: rh-ruby22-rubygem-redhat_access_cfme
 BuildRequires: %{?scl_prefix}rubygems-devel
 BuildRequires: %{?scl_prefix}ruby-devel
 
@@ -88,7 +90,7 @@ GEMFILE
 cp -pa .%{rubygem_redhat_access_cfme_dir}/deploy/miq_user_roles/* %{buildroot}%{miq_role_dir}
 cp -pa .%{rubygem_redhat_access_cfme_dir}/deploy/miq_product_features/* %{buildroot}%{miq_feature_dir}
 cp -pa .%{rubygem_redhat_access_cfme_dir}/deploy/menubar/* %{buildroot}%{miq_menu_dir}
-cp -pa .%{rubugem_redhat_access_cfme_dir}/deploy/miq_shortcuts/* %{buildroot}%{miq_shortcuts_dir}
+cp -pa .%{rubygem_redhat_access_cfme_dir}/deploy/miq_shortcuts/* %{buildroot}%{miq_shortcuts_dir}
 
 
 # Run the test suite
@@ -103,10 +105,11 @@ popd
 %{miq_feature_dir}/redhat_access_miq_product_features.yml
 
 %{miq_menu_dir}/redhat_access_insights_section.yml
+%{miq_menu_dir}/redhat_access_insights_item_rules.yml
 %{miq_menu_dir}/redhat_access_insights_item_systems.yml
 %{miq_menu_dir}/redhat_access_insights_item_overview.yml
 %{miq_menu_dir}/redhat_access_insights_item_actions.yml
-%{miq_menu_dir}/redhat_access_insights_item_rules.yml
+
 
 %{miq_shortcuts_dir}/redhat_access_miq_shortcuts.yml
 
@@ -131,6 +134,15 @@ popd
 %{gem_instdir}/test
 
 %changelog
+* Mon Oct 30 2017 Lindani Phiri <lphiri@redhat.com> - 2.0.0-1
+- BZ 1492888 - Complete UI overhaul
+
+* Wed Sep 21 2016 Lindani Phiri <lphiri@redhat.com> - 1.1.0-1
+- BZ 1376888 - Obsolete ruby22 SCL
+- Up version for new release
+
+* Fri Jun 3 2016 Lindani Phiri <lphiri@redhat.com> - 1.0.3-1
+- BZ 1281448 - Fix the login for user with RH Insights feature only
 
 * Thu Apr 28 2016 Lindani Phiri <lphiri@redhat.com> - 1.0.2-1
 - BZ 1329540
