@@ -17,7 +17,8 @@ RedhatAccessCfme::Engine.routes.draw do
   #   get   '/system',    to: 'telemetry_api#get_machine_ids'
   #   get   '/system/:guid',    to: 'telemetry_api#get_machine_id'
   # end
-
+  get '/insights(/configure)', to: 'insights#configure'
+  get '/insights(/help)', to: 'insights#help'
   get '/insights(/*path)', to: 'insights#index'
   
 end

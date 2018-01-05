@@ -128,7 +128,7 @@ module RedhatAccessCfme
           :user       => REDHAT_ACCESS_CONFIG[:user],
           :password   => REDHAT_ACCESS_CONFIG[:password],
           :verify_ssl => rhai_verify_ssl,
-          :ca_file    => ca_file
+          :ssl_ca_file    => ca_file
         }
       end
 

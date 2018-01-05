@@ -1,14 +1,2 @@
-- if !rhai_prereqs_met?
-  #serverunregistered.container.main-content.insights-main-content
-    %br
-    %br
-    %br
-    .alert.alert-info
-      %span.icon-info
-      %strong
-        = _("This appliance is not registered to Red Hat.")
-    %p
-      = _("To use Red Hat Insights, the appliance must be registered to Red Hat Subscription Management  or Satellite (version 6.1 or newer).")
-- else
-  .container.main-content.insights-main-content.insights-app-overview{"ng-app" => "RedhatAccessInsights"}
-    .wrapper.ng-cloak.in-prod{"ui-view" => ""}
+.container.main-content.insights-main-content.insights-app-overview{"ng-app" => "RedhatAccessInsights"}
+  .wrapper.ng-cloak.in-prod{"ui-view" => ""}

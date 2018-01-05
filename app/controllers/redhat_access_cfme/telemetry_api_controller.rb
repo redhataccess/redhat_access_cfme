@@ -86,18 +86,18 @@ module RedhatAccessCfme
                                                              :user_headers        => {'content-type' => 'application/json', 'accept' => 'application/json'},
                                                              :http_proxy          => rhai_service_proxy,
                                                              SUBSET_LIST_TYPE_KEY => SUBSET_LIST_TYPE)
-
-      res = client.call_tapi(original_method, URI.escape(resource), original_params, original_payload, nil)
-      # 401 errors means our proxy is not configured right.
-      # Change it to 502 to distinguish with local applications 401 errors
-      resp_data = res[:data]
-      if (res[:code] == 401)
-        res[:code] = 502
-        resp_data = {
-          :message => 'Authentication to the Insights service failed.'
-        }
+      begin
+        res = client.call_tapi(original_method, URI.escape(resource), original_params, original_payload, nil)
+        # 401 errors means our proxy is not configured right.
+        # Change it to 502 to distinguish with local applications 401/403 errors
+        resp_data = res[:data]
+        if (res[:code] == 401 || res[:code] == 403  || res[:code] == 500)
+          res[:code] = 502
+        end
+        render :status => res[:code], :json => resp_data
+      rescue Exception => e
+        render :status => 502 , :json => { error: e}
       end
-      render :status => res[:code], :json => resp_data
     end
 
     def add_branch_to_params(params, resource)

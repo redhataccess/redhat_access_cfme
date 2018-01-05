@@ -1,4 +1,4 @@
-:ssl_verify_peer : false
+:ssl_verify_peer : true
 :use_basic_auth  : false
 :password : XXXX
 :user : XXXX
