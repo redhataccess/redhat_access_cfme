@@ -5,6 +5,8 @@ module RedhatAccessCfme
       include RedhatAccessCfme::Telemetry::MiqApi
 
       def initialize(upload_url, api_url, creds, context, optional)
+        upload_url = rhai_service_url if upload_url.nil?
+        api_url = rhai_service_url if api_url.nil?
         super(upload_url, api_url, creds, optional)
         $log.debug("#{self.class} : API url #{api_url}")
         $log.debug("#{self.class} : UPLOAD url #{upload_url}")
