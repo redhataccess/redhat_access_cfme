@@ -2,7 +2,7 @@
 %{!?scl:%global pkg_name %{name}}
 
 %global gem_name redhat_access_cfme
-
+%global __requires_exclude ^rubygem\\((.*)\\)
 
 %global miq_dir /var/www/miq/vmdb
 %global miq_bundlerd_dir %miq_dir/bundler.d
@@ -14,7 +14,7 @@
 
 Name: %{?scl_prefix}rubygem-%{gem_name}
 Version: 2.0.2
-Release: 2%{?dist}
+Release: 3%{?dist}
 Summary: Summary of RedhatAccess
 Group: Development/Languages
 License: MIT
@@ -135,6 +135,9 @@ popd
 %{gem_instdir}/test
 
 %changelog
+
+* Mon Jun 04 2018 Lindani Phiri <lphiri@redhat.com> - 2.0.2-3
+- Non RHCL repackage
 
 * Mon Jan 08 2018 Lindani Phiri <lphiri@redhat.com> - 2.0.2-1
 - BZ1518919/1518277
