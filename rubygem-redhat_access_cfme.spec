@@ -14,7 +14,7 @@
 
 Name: %{?scl_prefix}rubygem-%{gem_name}
 Version: 2.0.2
-Release: 3%{?dist}
+Release: 4%{?dist}
 Summary: Summary of RedhatAccess
 Group: Development/Languages
 License: MIT
@@ -27,6 +27,8 @@ Requires: %{?scl_prefix}ruby
 Requires: %{?scl_prefix}rubygem-redhat_access_lib >= 1.1.4
 #Not happy with hardcoded previous scl_prefix here but there is no macro to determine it:
 Obsoletes: rh-ruby22-rubygem-redhat_access_cfme
+Obsoletes: rh-ruby23-rubygem-redhat_access_cfme
+
 BuildRequires: %{?scl_prefix}rubygems-devel
 BuildRequires: %{?scl_prefix}ruby-devel
 
