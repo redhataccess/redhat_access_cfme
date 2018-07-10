@@ -2,7 +2,7 @@ module RedhatAccessCfme
   class Engine < ::Rails::Engine
     isolate_namespace RedhatAccessCfme
     
-    initializer "redhat_access.mount_engine", :after => :build_middleware_stack do |app|
+    initializer "redhat_access.mount_engine" do |app|
       app.config.assets.paths << "#{RedhatAccessCfme::Engine.root}/vendor/assets/images"
       app.config.assets.paths << "#{RedhatAccessCfme::Engine.root}/vendor/assets/stylesheets"
       app.config.assets.paths << "#{RedhatAccessCfme::Engine.root}/vendor/assets/fonts"
