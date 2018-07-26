@@ -13,8 +13,8 @@
 %global rubygem_redhat_access_cfme_dir %{gem_dir}/gems/%{gem_name}-%{version}
 
 Name: %{?scl_prefix}rubygem-%{gem_name}
-Version: 2.0.2
-Release: 4%{?dist}
+Version: 2.0.3
+Release: 1%{?dist}
 Summary: Summary of RedhatAccess
 Group: Development/Languages
 License: MIT
@@ -137,6 +137,9 @@ popd
 %{gem_instdir}/test
 
 %changelog
+
+* Thu Jul 12 2018 Rex White <rewhite@redhat.com> - 2.0.3-1
+- Remove initializer ordering
 
 * Mon Jun 04 2018 Lindani Phiri <lphiri@redhat.com> - 2.0.2-3
 - Non RHCL repackage
